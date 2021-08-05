@@ -1,0 +1,28 @@
+{
+  "name": "mern_blog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon index",
+    "client": "npm start --prefix client",
+    "clientInstall": "npm install --prefix client",
+    "dev": "concurrently \" npm run server \" \" npm run client \" "
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "bcrypt": "^5.0.1",
+    "concurrently": "^6.2.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.12.1",
+    "formidable": "^1.2.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.13.3",
+    "nodemon": "^2.0.12",
+    "uuid": "^8.3.2"
+  }
+}
