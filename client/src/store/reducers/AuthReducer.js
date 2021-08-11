@@ -23,8 +23,10 @@ const verifyToken = (token) => {
 const token = localStorage.getItem('myToken');
 if(token){
     const decodedToken = verifyToken(token)
-    initState.token = token;
-    initState.user = decodedToken.user
+    if(decodedToken){
+        initState.token = token;
+        initState.user = decodedToken.user
+    }   
 }
 
 const AuthReducer = (state= initState, action) => {

@@ -14,6 +14,7 @@
         border: 1px solid $silverLight;
         border-top: none;
         background: $white;
+        cursor: pointer;
 
         a{
             color: $black;
@@ -23,6 +24,15 @@
         h3{
             font-size: 1.8rem;
             font-weight: 400;
+        }
+        &:hover {
+            background: $green;
+        }
+        &:hover a {
+            color: $white;
+        }
+        &:hover h3 {
+            color: $white;
         }
 
     }
