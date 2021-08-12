@@ -41,7 +41,7 @@ const Pagination = ({ count, perPage, page }) => {
          }
      }
 
-    return totalPages ?  <div className="pagination"> {prev()} {links()} {next()} </div> : ''
+    return totalPages && count > 3 ?  <div className="pagination"> {prev()} {links()} {next()} </div> : ''
 }
 
 export default Pagination

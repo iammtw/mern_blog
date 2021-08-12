@@ -13,7 +13,7 @@ const EditImage = () => {
     const {id} = useParams();
     const dispatch = useDispatch();
     const {push} = useHistory();
-    const {updateImageErrors} = useSelector(state => state.UpdateImage)
+    const { updateImageErrors } = useSelector(state => state.UpdateImage)
     const {redirect}  = useSelector(state => state.PostReducer)
 
     const fileHandle =(e) => {
@@ -39,9 +39,9 @@ const EditImage = () => {
     }
 
     useEffect(()=> {
-        if(updateImageErrors.length > 0){
-            updateImageErrors.map(error=> toast.error(error.msg))
-            // dispatch({ type: RESET_IMAGE_ERRORS })
+        if(updateImageErrors.length !== 0){
+            updateImageErrors.map((error) => toast.error(error.msg))
+            dispatch({ type: RESET_IMAGE_ERRORS })
         }
     },[updateImageErrors])
 

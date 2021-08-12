@@ -148,7 +148,17 @@ const postController = {
                 })
             }         
         }) 
-    }
+    },
+    deletePost : async (req,res) => {
+        const id  = req.params.id;
+        try {
+            const response = await Post.findByIdAndRemove(id);
+            return res.status(200).json({ msg: "Your Post has been Deleted" })
+        } catch (error) {
+            console.log(error.message)
+            return res.status(500).json({ errors: error,msg: error.c  })
+        }
+    },
 }
 
 module.exports = postController;

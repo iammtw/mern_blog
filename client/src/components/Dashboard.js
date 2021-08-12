@@ -2,26 +2,49 @@ import React ,{useEffect} from 'react'
 import { Helmet } from "react-helmet"
 import { useSelector, useDispatch } from 'react-redux'
 import toast, { Toaster } from 'react-hot-toast';
-import { REDIRECT_FALSE, REMOVE_MESSAGE } from './../store/types/PostTypes';
+import { CLOSE_LOADER, REDIRECT_FALSE, REMOVE_MESSAGE, SET_MESSAGE } from './../store/types/PostTypes';
 import { fetchPosts } from '../store/asyncMethods/PostMethod'
 import { Link, useParams } from 'react-router-dom';
 import { BsPencil, BsArchive, BsImage } from "react-icons/bs";
 import Loader from './Loader';
 import Sidebar from './Sidebar';
 import Pagination from './Pagination';
-
+import axios from 'axios';
+import { SET_LOADER } from './../store/types/UserTypes';
 
 
 const Dashboard = () => {
     
     const { redirect, message, loading } = useSelector(state => state.PostReducer)
-    const { user: { _id } } = useSelector(state => state.AuthReducer)
+    const { user: { _id }, token } = useSelector(state => state.AuthReducer)
     const {posts, count, perPage } = useSelector(state => state.FetchPosts)
     let { page } = useParams();
     if(page === undefined){
         page = 1;
     }
     const dispatch = useDispatch();
+
+    const deletePost = async (id) => {
+        const confirm = window.confirm('Are you sure you want to delete this post?')
+        if(confirm){
+            const config = {
+                headers : {
+                    Authorization: `Bearer  ${token}`
+                }
+            }
+            dispatch({ type: SET_LOADER })
+            try {
+                const { data : {msg} } = await axios.get(`/delete/${id}`, config);
+                dispatch(fetchPosts(_id, page))
+                dispatch({ type: CLOSE_LOADER })
+                dispatch({ type: SET_MESSAGE, payload: msg })
+            } catch (error) {
+                const { data: {errors} } = error.response;
+                dispatch({ type: CLOSE_LOADER })
+            }
+        }
+    }
+
     useEffect(() => {
        if(redirect){
             dispatch({ type: REDIRECT_FALSE })
@@ -30,8 +53,13 @@ const Dashboard = () => {
         toast.success(message)
         dispatch({ type:REMOVE_MESSAGE })
        }
-       dispatch(fetchPosts(_id, page))
-    }, [page])
+    }, [message])
+
+    useEffect(()=> {
+        dispatch(fetchPosts(_id, page))
+    },[page])
+
+
 
     return (
         <>
@@ -66,7 +94,7 @@ const Dashboard = () => {
                                                 <div className="dashboard__posts__links">
                                                     <Link to={`/updateImage/${post._id}`}> <BsImage className='icon'/> </Link>
                                                     <Link to={`/edit/${post._id}`}> <BsPencil className='icon'/> </Link>
-                                                    <BsArchive className='icon'/>
+                                                    <BsArchive onClick={ () => deletePost(post._id) } className='icon'/>
                                                     
                                                 </div>
                                             </div> 
