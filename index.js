@@ -11,11 +11,13 @@ connect()
 // imports routers
 const userRouter = require('./routes/userRoutes')
 const postRouter = require('./routes/postRoutes')
+const profileRouter = require('./routes/profileRoutes')
 
 
 // routers
 app.use('/', userRouter)
 app.use('/', postRouter)
+app.use('/', profileRouter)
 
 app.listen(PORT, ()=> {
     console.log('App is running');
