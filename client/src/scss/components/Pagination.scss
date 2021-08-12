@@ -4,6 +4,12 @@
     margin-bottom: 1rem;
     li:first-child {
         border-left: 1px solid $green !important;
+        border-top-left-radius: .6rem;
+        border-bottom-left-radius: .6rem;
+    }
+    li:last-child {
+        border-top-right-radius: .6rem;
+        border-bottom-right-radius: .6rem;
     }
     li {
         list-style-type: none;
@@ -17,6 +23,12 @@
         padding: 1rem;
         color: $green;
         font-size: 1.4rem;
+    }
+    .active {
+        background: $green;
+        a {
+            color: $white;
+        }
     }
 
 }

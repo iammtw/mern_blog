@@ -55,7 +55,6 @@ const userController = {
             if(!user){
                 return res.status(404).json({ errors: [{ msg: 'User not found!' }] }) 
             } else {
-                console.log(password);
                 const matched = await bcrypt.compare(password, user.password);
                 if(!matched){
                     return res.status(401).json({ errors: [{ msg: 'Invalid Credentials!' }] })  

@@ -20,7 +20,7 @@ const Pagination = ({ count, perPage, page }) => {
      const links =() => {
          const store = []
          for (let i=startLoop; i<=endLoop; i++){
-             store.push(<li key={i}> 
+             store.push(<li key={i} className={i === page ? 'active' : ''}> 
                 <Link to={`/dashboard/${i}`}>{i}</Link> 
              </li>);
          }
@@ -41,11 +41,7 @@ const Pagination = ({ count, perPage, page }) => {
          }
      }
 
-    return (
-        <div className="pagination"> {prev()} {links()} {next()} </div>
-            
-        
-    )
+    return totalPages ?  <div className="pagination"> {prev()} {links()} {next()} </div> : ''
 }
 
 export default Pagination

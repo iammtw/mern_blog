@@ -5,11 +5,13 @@ import {
     REMOVE_ERRORS,
     CLOSE_LOADER, 
     CREATE_ERRORS, 
-    REDIRECT_FALSE, 
     REDIRECT_TRUE, 
     SET_MESSAGE, 
-    REMOVE_MESSAGE,
-    SET_POSTS 
+    SET_POSTS,
+    SET_POST,
+    POST_REQUEST,
+    SET_UPDATE_ERRORS,
+    RESET_UPDATE_ERRORS
 } from '../types/PostTypes'
 
 // const token = localStorage.getItem('myToken')
@@ -59,5 +61,50 @@ export const fetchPosts = (id,page) => {
 
     }
 }
+
+export const fetchPost = (id) => {
+    return async (dispatch, getState)=> {
+        const {AuthReducer : {token}} = getState()
+        dispatch({ type: SET_LOADER })
+        try {
+            const config = {
+                headers : {
+                    Authorization: `Bearer  ${token}`
+                }
+            }
+            const { data : { response } } = await axios.get(`/post/${id}`, config);
+            dispatch({ type: CLOSE_LOADER })
+            dispatch({ type: SET_POST, payload: response })
+            dispatch({ type: POST_REQUEST })
+        } catch (error) {
+            dispatch({ type: CLOSE_LOADER })
+        }
+
+    }
+}
+
+export const updateAction = (editData) => {
+    return async (dispatch, getState)=> {
+        const {AuthReducer : {token}} = getState()
+        const config = {
+            headers : {
+                Authorization: `Bearer  ${token}`
+            }
+        }
+        dispatch({ type: SET_LOADER })
+        try {
+            const { data } = await axios.post(`/update`,editData, config);
+            dispatch({ type: CLOSE_LOADER })
+            dispatch({ type: REDIRECT_TRUE })
+            dispatch({ type: SET_MESSAGE, payload: data.msg })
+        } catch (error) {
+            const { data: {errors} } = error.response;
+            dispatch({ type: CLOSE_LOADER })
+            dispatch({ type: SET_UPDATE_ERRORS, payload: errors })
+        }
+
+    }
+}
+
 
 

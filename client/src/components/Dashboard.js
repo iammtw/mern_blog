@@ -18,7 +18,7 @@ const Dashboard = () => {
     const { user: { _id } } = useSelector(state => state.AuthReducer)
     const {posts, count, perPage } = useSelector(state => state.FetchPosts)
     let { page } = useParams();
-    if(page == undefined){
+    if(page === undefined){
         page = 1;
     }
     const dispatch = useDispatch();
@@ -64,7 +64,7 @@ const Dashboard = () => {
                                                     <Link to="">{post.title}</Link>
                                                 </div>
                                                 <div className="dashboard__posts__links">
-                                                    <Link to="/"> <BsPencil className='icon'/> </Link>
+                                                    <Link to={`/edit/${post._id}`}> <BsPencil className='icon'/> </Link>
                                                     <BsArchive className='icon'/>
                                                     
                                                 </div>
