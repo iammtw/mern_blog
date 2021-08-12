@@ -11,7 +11,7 @@ import {
     SET_POST,
     POST_REQUEST,
     SET_UPDATE_ERRORS,
-    RESET_UPDATE_ERRORS
+    UPDATE_IMAGE_ERRORS
 } from '../types/PostTypes'
 
 // const token = localStorage.getItem('myToken')
@@ -101,6 +101,29 @@ export const updateAction = (editData) => {
             const { data: {errors} } = error.response;
             dispatch({ type: CLOSE_LOADER })
             dispatch({ type: SET_UPDATE_ERRORS, payload: errors })
+        }
+
+    }
+}
+
+export const updateImageAction = (updateData) => {
+    return async (dispatch, getState)=> {
+        const {AuthReducer : {token}} = getState()
+        const config = {
+            headers : {
+                Authorization: `Bearer  ${token}`
+            }
+        }
+        dispatch({ type: SET_LOADER })
+        try {
+            const { data : {msg} } = await axios.post(`/updateImage`,updateData, config);
+            dispatch({ type: CLOSE_LOADER })
+            dispatch({ type: REDIRECT_TRUE })
+            dispatch({ type: SET_MESSAGE, payload: msg })
+        } catch (error) {
+            const { data: {errors} } = error.response;
+            dispatch({ type: CLOSE_LOADER })
+            dispatch({ type: UPDATE_IMAGE_ERRORS, payload: errors })
         }
 
     }

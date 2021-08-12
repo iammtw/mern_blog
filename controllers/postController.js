@@ -113,6 +113,42 @@ const postController = {
             return res.status(500).json({ errors: error,msg: error.c  })
         }
     },
+    updateImage : async (req,res) => {
+        const form = formidable({multiples: true})
+        form.parse(req, async (error, fields, files)=> {
+            const  { id } = fields;
+            const errors =[];
+
+            if(Object.keys(files).length == 0){
+                errors.push({ msg: 'Image is Required' })
+            } else {
+                const { type } = files.image;
+                const split = type.split('/');
+                const extension = split[1].toLowerCase();
+                if(extension !== 'jpeg'&& extension !== 'jpg' && extension !== 'png'){
+                        errors.push({ msg: `${extension} is not a valid extension.` })
+                } else {
+                    files.image.name = uuidv4() + '.' + extension;
+                }
+            }
+
+            if(errors.length !== 0){
+                return res.status(400).json({ errors })
+            }  else {
+                const newPath = __dirname + `/../client/public/images/${files.image.name}`
+                fs.copyFile(files.image.path, newPath, async (error)=> {
+                    if(!error){
+                        try {
+                            const response = await Post.findByIdAndUpdate(id, { image:files.image.name })
+                            return res.status(200).json({ msg: 'Your Post has been updated successfully.', response })
+                        } catch (error) {
+                            return res.status(500).json({ errors: error,msg: error.message  })
+                        }
+                    }
+                })
+            }         
+        }) 
+    }
 }
 
 module.exports = postController;

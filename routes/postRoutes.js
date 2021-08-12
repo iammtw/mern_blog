@@ -6,6 +6,6 @@ router.post('/create_post',auth, postController.createPost)
 router.post('/update',[auth, postController.updateValidations],postController.updatePost)
 router.get('/posts/:id/:page',auth,postController.fetchPosts)
 router.get('/post/:id',auth,postController.fetchPost)
-router.get('/updateImage/:id',auth,postController.updateImage)
+router.post('/updateImage',auth,postController.updateImage)
 
 module.exports = router;
