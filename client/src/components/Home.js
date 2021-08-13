@@ -1,6 +1,29 @@
 import { Helmet } from "react-helmet"
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { homePosts } from "../store/asyncMethods/PostMethod";
+import { useParams } from 'react-router-dom';
 
 const Home = () => {
+
+    const { loading } = useSelector(state => state.PostReducer)
+    const {posts, count, perPage } = useSelector(state => state.FetchPosts)
+    let {page} = useParams();
+    if(page === undefined){
+        page = 1;
+    }
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+       dispatch(homePosts())
+    }, [])
+    console.log('page: ',page);
+    console.log('posts: ',posts);
+    console.log('count: ',count);
+    console.log('perPage: ',perPage);
+
+
     return (
         <>
             <Helmet>
