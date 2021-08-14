@@ -6,6 +6,7 @@ const formidable = require('formidable')
 const {body, validationResult} = require('express-validator')
 const { convert } = require('html-to-text');
 const Post = require('../models/post');
+const Comment = require('../models/comment');
 const postController = {
     createPost : (req,res)=> {
         const form = formidable({multiples: true})
@@ -175,7 +176,17 @@ const postController = {
        const id = req.params.id
        try {
             const post = await Post.findOne({slug: id});
-            return res.status(200).json({ post})
+            const comments = await Comment.find({ postId: post._id }).sort({ updatedAt: -1 });
+            return res.status(200).json({ post, comments})
+        } catch (error) {
+            return res.status(500).json({ errors: error,msg: error.message  })
+        }
+    },
+    postComment : async (req,res) => {
+       const {id, comment, userName} = req.body;
+       try {
+            const response = await Comment.create({ comment, postId: id, userName });
+            return res.status(200).json({ msg: 'Your comment has been posted'})
         } catch (error) {
             return res.status(500).json({ errors: error,msg: error.message  })
         }

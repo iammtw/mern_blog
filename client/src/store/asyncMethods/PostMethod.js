@@ -12,7 +12,8 @@ import {
     POST_REQUEST,
     SET_UPDATE_ERRORS,
     UPDATE_IMAGE_ERRORS,
-    SET_DETAILS
+    SET_DETAILS,
+    COMMENTS
 } from '../types/PostTypes'
 
 // const token = localStorage.getItem('myToken')
@@ -148,11 +149,35 @@ export const postDetails = (id) => {
     return async (dispatch)=> {
         dispatch({ type: SET_LOADER })
         try {
-            const { data : { post } } = await axios.get(`/details/${id}`);
+            const { data : { post, comments } } = await axios.get(`/details/${id}`);
             dispatch({ type: CLOSE_LOADER })
             dispatch({ type: SET_DETAILS, payload: post })
+            dispatch({ type: COMMENTS, payload: comments })
         } catch (error) {
             dispatch({ type: CLOSE_LOADER })
+        }
+
+    }
+}
+
+export const postComment = (commentData) => {
+    return async (dispatch, getState)=> {
+        const {AuthReducer : {token}} = getState()
+        const config = {
+            headers : {
+                Authorization: `Bearer  ${token}`
+            }
+        }
+        dispatch({ type: SET_LOADER })
+        try {
+            const { data : {msg} } = await axios.post(`/comment`,commentData, config);
+            dispatch({ type: CLOSE_LOADER })
+            dispatch({ type: SET_MESSAGE, payload: msg })
+            console.log(msg);
+        } catch (error) {
+            const { data: {errors} } = error.response;
+            dispatch({ type: CLOSE_LOADER })
+         
         }
 
     }

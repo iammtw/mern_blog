@@ -10,5 +10,6 @@ router.post('/updateImage',auth,postController.updateImage)
 router.get('/delete/:id',auth,postController.deletePost)
 router.get('/home/:page',postController.home)
 router.get('/details/:id',postController.detail)
+router.post('/comment',auth, postController.postComment)
 
 module.exports = router;

@@ -5,9 +5,10 @@ import 'react-quill/dist/quill.snow.css';
 import toast, { Toaster } from 'react-hot-toast';
 import { createAction } from '../store/asyncMethods/PostMethod';
 import { useSelector, useDispatch } from 'react-redux';
+import Loader from './Loader';
 
 const Create = (props) => {
-    const { createErrors, redirect } = useSelector(state => state.PostReducer)
+    const { createErrors, redirect,loading } = useSelector(state => state.PostReducer)
     const [currentImage, setCurrentImage] = useState('Choose Image')
     const [imagePreview, setimagePreview] = useState('')
     const [value, setValue] = useState('');
@@ -110,7 +111,7 @@ const Create = (props) => {
                     },
                     }}
             />
-            <div className="container">
+            {!loading ? <div className="container">
             <form onSubmit={createPost}>
                 <div className="row ml-minus-15 mr-minus-15">
                     <div className="col-6 p-15">
@@ -166,7 +167,7 @@ const Create = (props) => {
                     </div>
                 </div>
             </form>
-            </div>
+            </div> : <Loader />}
         </div>
     )
 }
