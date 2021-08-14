@@ -91,7 +91,7 @@ const Dashboard = () => {
                                             <div className="dashboard__posts" key={post._id}>
                                                 <div className="dashboard__posts__title">
                                                     <Link to="">{post.title}</Link>
-                                                    <span>Published {moment(post.updatedAt,"YYYYMMDD").fromNow()}</span>
+                                                    <span>Published {moment(post.updatedAt).fromNow()}</span>
                                                 </div>
                                                 <div className="dashboard__posts__links">
                                                     <Link to={`/updateImage/${post._id}`}> <BsImage className='icon'/> </Link>
@@ -104,7 +104,7 @@ const Dashboard = () => {
                                     })  
                                     : 'You dont have any posts' 
                         }
-                        <Pagination count={count} perPage={perPage} page={page}/>
+                        <Pagination path="dashboard" count={count} perPage={perPage} page={page}/>
                     </div>
                 </div>
             </div>
