@@ -15,6 +15,7 @@ import Edit from "./components/Edit";
 import EditImage from './components/EditImage';
 import UpdateName from './components/UpdateName';
 import ChangePassword from './components/ChangePassword';
+import Details from './components/Details';
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
             <Switch>
               <Route path='/' exact component={Home} />
               <Route path='/home/:page' exact component={Home} />
+              <Route path='/details/:id' exact component={Details} />
               <RouteLinks path='/register' exact component={Register} />
               <RouteLinks path='/login' exact component={Login} />
               <PrivateRoute path='/dashboard/:page?' exact component={Dashboard} />

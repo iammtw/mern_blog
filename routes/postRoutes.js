@@ -9,5 +9,6 @@ router.get('/post/:id',auth,postController.fetchPost)
 router.post('/updateImage',auth,postController.updateImage)
 router.get('/delete/:id',auth,postController.deletePost)
 router.get('/home/:page',postController.home)
+router.get('/details/:id',postController.detail)
 
 module.exports = router;

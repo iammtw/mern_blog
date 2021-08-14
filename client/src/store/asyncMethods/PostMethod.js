@@ -11,7 +11,8 @@ import {
     SET_POST,
     POST_REQUEST,
     SET_UPDATE_ERRORS,
-    UPDATE_IMAGE_ERRORS
+    UPDATE_IMAGE_ERRORS,
+    SET_DETAILS
 } from '../types/PostTypes'
 
 // const token = localStorage.getItem('myToken')
@@ -136,6 +137,20 @@ export const homePosts = (page) => {
             const { data : { response, count, perPage } } = await axios.get(`/home/${page}`);
             dispatch({ type: CLOSE_LOADER })
             dispatch({ type: SET_POSTS, payload: {response, count, perPage} })
+        } catch (error) {
+            dispatch({ type: CLOSE_LOADER })
+        }
+
+    }
+}
+
+export const postDetails = (id) => {
+    return async (dispatch)=> {
+        dispatch({ type: SET_LOADER })
+        try {
+            const { data : { post } } = await axios.get(`/details/${id}`);
+            dispatch({ type: CLOSE_LOADER })
+            dispatch({ type: SET_DETAILS, payload: post })
         } catch (error) {
             dispatch({ type: CLOSE_LOADER })
         }

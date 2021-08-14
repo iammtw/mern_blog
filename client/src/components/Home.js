@@ -8,7 +8,7 @@ import moment from 'moment'
 import Loader from "./Loader";
 import { Link } from 'react-router-dom';
 import Pagination from "./Pagination";
-
+import parse from 'html-react-parser';
 
 const Home = () => {
     const { loading } = useSelector(state => state.PostReducer)
@@ -33,7 +33,7 @@ const Home = () => {
                 <div className="row mt-100" style={{ marginBottom: '30px' }}>
                     <div className="col-9 home">
                         { !loading ? posts.length > 0 ? posts.map(post => (
-                            <div className="row post-style">
+                            <div className="row post-style" key={post._id}>
                                 <div className="col-8">
                                     <div className="post">
                                         <div className="post__header">
@@ -47,10 +47,10 @@ const Home = () => {
                                         </div>
                                         <div className="post__body">
                                             <h1 className="post__body__title">
-                                                <Link>{post.title}</Link>
+                                                <Link to={`/details/${post.slug}`}>{post.title}</Link>
                                             </h1>
                                             <div className="post__body__details">
-                                            {(post.body.slice(0,300))}
+                                            {parse(post.description.replace(/\n/g, '').slice(0,300))}
                                             </div>
                                         </div>
                                     </div>
@@ -67,9 +67,9 @@ const Home = () => {
                 </div>
                 <div className="row">
                     <div className="col-9">
-                     
-                    <Pagination path="home" count={count} perPage={perPage} page={page}/>
+                        <Pagination path="home" count={count} perPage={perPage} page={page}/>
                     </div>
+                    
                 </div>
             </div>
         </>
